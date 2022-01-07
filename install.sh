@@ -82,7 +82,6 @@ install_download() {
         echo
         exit 1
     fi
-	
     cp -rf ./minerProxy /etc/
     if [[ ! -d $installPath ]]; then
         echo
