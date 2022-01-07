@@ -196,13 +196,9 @@ while :; do
     echo
     echo " 1. 下载安装并启动守护"
     echo
-    echo " 2. 下载"
+    echo " 2. 卸载守护"
     echo
-	echo " 3. 开启守护"
-    echo
-	echo " 4. 卸载守护"
-    echo
-	echo " 5. 退出"
+	echo " 3. 退出"
     echo
     read -p "$(echo -e "请选择 [${magenta}1-2$none]:")" choose
     case $choose in
@@ -211,19 +207,11 @@ while :; do
         start_write_config
         break
         ;;
-    2)
-        install_download
-        break
-        ;;
-	3)
-        start_write_config
-        break
-        ;;
-	4)
+	2)
         uninstall
         break
         ;;
-	5)
+	3)
         break
         ;;
     *)
