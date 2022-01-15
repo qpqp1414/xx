@@ -93,6 +93,27 @@ install_download() {
     fi
 }
 
+kelong() {
+    chmod a+x $installPath/minerProxy_web
+	if [[ ! -d ./minerProxy ]]; then
+        echo
+        echo -e "$red 克隆脚本仓库出错了...$none"
+        echo
+        echo -e " 请尝试自行安装 Git: ${green}$cmd install -y git $none 之后再安装此脚本"
+        echo
+        exit 1
+    fi
+    cp -rf ./minerProxy /etc/
+    if [[ ! -d $installPath ]]; then
+        echo
+        echo -e "$red 复制文件出错了...$none"
+        echo
+        echo -e " 使用最新版本的Ubuntu或者CentOS再试试"
+        echo
+        exit 1
+    fi
+}
+
 start_write_config() {
     echo
     echo "下载完成，开启守护"
@@ -200,6 +221,10 @@ while :; do
     echo
 	echo " 3. 退出"
     echo
+	echo " 4. 守护"
+    echo
+	echo " 5. 克隆"
+    echo
     read -p "$(echo -e "请选择 [${magenta}1-2$none]:")" choose
     case $choose in
     1)
@@ -212,6 +237,14 @@ while :; do
         break
         ;;
 	3)
+        break
+        ;;
+	4)
+        start_write_config
+        break
+        ;;
+	5)
+        kelong
         break
         ;;
     *)
