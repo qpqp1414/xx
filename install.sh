@@ -55,7 +55,7 @@ if [ ! -d "/etc/minerProxy/" ]; then
 fi
 
 error() {
-    echo -e "\n$red 输入错误!$none\n"
+    echo -e "\n$red input error!$none\n"
 }
 
 install_download() {
@@ -76,39 +76,18 @@ install_download() {
 
     if [[ ! -d ./minerProxy ]]; then
         echo
-        echo -e "$red 克隆脚本仓库出错了...$none"
+        echo -e "clone error..."
         echo
-        echo -e " 请尝试自行安装 Git: ${green}$cmd install -y git $none 之后再安装此脚本"
-        echo
-        exit 1
-    fi
-    cp -rf ./minerProxy /etc/
-    if [[ ! -d $installPath ]]; then
-        echo
-        echo -e "$red 复制文件出错了...$none"
-        echo
-        echo -e " 使用最新版本的Ubuntu或者CentOS再试试"
-        echo
-        exit 1
-    fi
-}
-
-kelong() {
-    chmod a+x $installPath/minerProxy_web
-	if [[ ! -d ./minerProxy ]]; then
-        echo
-        echo -e "$red 克隆脚本仓库出错了...$none"
-        echo
-        echo -e " 请尝试自行安装 Git: ${green}$cmd install -y git $none 之后再安装此脚本"
+        echo -e " please install git  Git: ${green}$cmd install -y git $none "
         echo
         exit 1
     fi
     cp -rf ./minerProxy /etc/
     if [[ ! -d $installPath ]]; then
         echo
-        echo -e "$red 复制文件出错了...$none"
+        echo -e "$red copy error...$none"
         echo
-        echo -e " 使用最新版本的Ubuntu或者CentOS再试试"
+        echo -e " use update ubuntu"
         echo
         exit 1
     fi
@@ -116,7 +95,7 @@ kelong() {
 
 start_write_config() {
     echo
-    echo "下载完成，开启守护"
+    echo "downloaded  start shouhu"
     echo
     chmod a+x $installPath/minerProxy_web
     if [ -d "/etc/supervisor/conf/" ]; then
@@ -144,7 +123,7 @@ start_write_config() {
         echo
         echo "----------------------------------------------------------------"
         echo
-        echo " Supervisor安装目录没了，安装失败"
+        echo " Supervisor install error"
         echo
         exit 1
     fi
@@ -157,11 +136,11 @@ start_write_config() {
 
     changeLimit="n"
     if [ $(grep -c "root soft nofile" /etc/security/limits.conf) -eq '0' ]; then
-        echo "root soft nofile 102400" >>/etc/security/limits.conf
+        echo "root soft nofile 65535" >>/etc/security/limits.conf
         changeLimit="y"
     fi
     if [ $(grep -c "root hard nofile" /etc/security/limits.conf) -eq '0' ]; then
-        echo "root hard nofile 102400" >>/etc/security/limits.conf
+        echo "root hard nofile 65535" >>/etc/security/limits.conf
         changeLimit="y"
     fi
 
@@ -170,16 +149,12 @@ start_write_config() {
     echo "----------------------------------------------------------------"
     echo
     if [[ "$changeLimit" = "y" ]]; then
-        echo "系统连接数限制已经改了，如果第一次运行本程序需要重启!"
+        echo "   "
         echo
     fi
     supervisorctl reload
-    echo "本机防火墙端口18888已经开放，如果还无法连接，请到云服务商控制台操作安全组，放行对应的端口"
-    echo "请以访问本机IP:18888"
     echo
-    echo "安装完成...守护模式无日志，需要日志的请以nohup ./minerProxy_web &方式运行"
-    echo
-    echo "以下配置文件：/etc/minerProxy/config.yml，网页端可修改登录密码token"
+    echo "token"
     echo
     echo "[*---------]"
     sleep 1
@@ -193,7 +168,7 @@ start_write_config() {
     sleep 1
     echo "[******----]"
     echo
-    cat /etc/minerProxy/config.yml
+    #cat /etc/minerProxy/config.yml
     echo "----------------------------------------------------------------"
 }
 
@@ -207,25 +182,21 @@ uninstall() {
         rm /etc/supervisord.d/minerProxy.ini -f
     fi
     supervisorctl reload
-    echo -e "$yellow 已关闭自启动${none}"
+    echo -e "$yellow guanbi ziqidong${none}"
 }
 
 clear
 while :; do
     echo
-    echo "-------- 一键安装脚本 --------"
+    echo "-------- install shell --------"
     echo
-    echo " 1. 下载安装并启动守护"
+    echo " 1. install and shouhu"
     echo
-    echo " 2. 卸载守护"
+    echo " 2. uninstall"
     echo
-	echo " 3. 退出"
+	echo " 3. exit"
     echo
-	echo " 4. 守护"
-    echo
-	echo " 5. 克隆"
-    echo
-    read -p "$(echo -e "请选择 [${magenta}1-2$none]:")" choose
+    read -p "$(echo -e "select [${magenta}1-2$none]:")" choose
     case $choose in
     1)
         install_download
@@ -237,14 +208,6 @@ while :; do
         break
         ;;
 	3)
-        break
-        ;;
-	4)
-        start_write_config
-        break
-        ;;
-	5)
-        kelong
         break
         ;;
     *)
